@@ -43,8 +43,8 @@ class Calculator:
             b = abs(b)
             result = 0
             while a >= b:
-                a = abs(self.subtract(a, b))
-                result += 1
+                a = self.subtract(a, b)
+                result -= 1
             return result
         elif (a < 0 and b < 0) or (a > 0 and b > 0):
             a = abs(a)
@@ -64,10 +64,34 @@ class Calculator:
             return -result
     
     def modulo(self, a, b):
-        assert isinstance(a, int) and isinstance(b, int), "Arguments must be integers"
-        while a >= b:
-            a = a-b
-        return a
+        if b == 0:
+            return "divisor can't be 0"
+
+        # If the original a was negative, adjust the result to keep it non-negative
+        if a < 0 and self.modulo(b,2) != 0 :#(-,odd)
+            a = -a
+            while a >= b:
+                a -= b
+            return a + 1
+        elif a < 0 and self.modulo(b,2) == 0 :#(-,even)
+            a = -a
+            while a >= b:
+                    a -= b
+            return a
+        elif b < 0 and self.modulo(b,2) != 0 :#(...,-odd)
+            b = -b
+            while a >= b:
+                a -= b
+            return -(a + 1)
+        elif b < 0 and self.modulo(b,2) == 0 :#(...,-even)
+            b = -b
+            while a >= b:
+                a -= b
+            return -a
+        else:
+            while a >= b:
+                a -= b
+            return a
 
 # Example usage:
 if __name__ == "__main__":
